@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+:root {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: #2563eb;
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: #1d4ed8;
+  }
+
+  .btn-secondary {
+    background-color: #f1f5f9;
+    color: #334155;
+  }
+  .btn-secondary:hover {
+    background-color: #e2e8f0;
+  }
+
+  .btn-danger {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+  .btn-danger:hover {
+    background-color: #fee2e2;
+  }
+
+  .btn-success {
+    background-color: #059669;
+    color: white;
+  }
+  .btn-success:hover {
+    background-color: #047857;
+  }
+
+  .input {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  .input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 1px #3b82f6;
+  }
+  .input:disabled {
+    background-color: #f1f5f9;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .card {
+    border-radius: 1rem;
+    background-color: white;
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.7);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .td {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #334155;
+  }
+}
+/* Fondo legal interactivo: detrás de todo, sin capturar clics */
+  .legal-bg {
+
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  }
+
+  /* ============================================================
+   FONDO VISIBLE EN TODAS LAS SECCIONES + TEMA CLARO/OSCURO
+   ============================================================ */
+
+/* --- Tarjetas translúcidas: el fondo se asoma en todo lado --- */
+.card {
+  background-color: rgb(255 255 255 / 0.82);
+  backdrop-filter: blur(8px);
+}
+.bg-white\/90 {
+  background-color: rgb(255 255 255 / 0.82);
+}
+
+/* --- Modo oscuro --- */
+.dark {
+  color-scheme: dark;
+}
+.dark .bg-slate-100 { background-color: #0f172a !important; }
+.dark .bg-white { background-color: #1e293b !important; }
+.dark .bg-slate-50 { background-color: #16213a !important; }
+.dark .bg-white\/90 { background-color: rgb(30 41 59 / 0.85) !important; }
+.dark .card { background-color: rgb(30 41 59 / 0.82); backdrop-filter: blur(8px); }
+.dark .text-slate-800 { color: #f1f5f9 !important; }
+.dark .text-slate-700 { color: #e2e8f0 !important; }
+.dark .text-slate-600 { color: #cbd5e1 !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+.dark .text-slate-400 { color: #64748b !important; }
+.dark .border-slate-200 { border-color: #334155 !important; }
+.dark .border-slate-100 { border-color: #334155 !important; }
+.dark .input {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+.dark .hover\:bg-slate-50:hover { background-color: #263449 !important; }
+.dark .hover\:bg-slate-100:hover { background-color: #263449 !important; }
+.dark [class*="divide-slate"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #334155 !important;
+}

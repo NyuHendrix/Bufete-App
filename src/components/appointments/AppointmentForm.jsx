@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X, AlertTriangle } from 'lucide-react'
-import { citasSeTraslapa } from '../../Utils/formatters'
+import { citasSeTraslapa } from '../../utils/formatters'
 
 const VACIO = {
   clientId: '', fecha: '', hora: '09:00', duracionMin: 60, tipo: 'Consulta',

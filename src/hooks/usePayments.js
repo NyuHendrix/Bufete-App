@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { paymentsApi, expensesApi } from '../Services/api'
+import { paymentsApi, expensesApi } from '../services/api'
 import { useEntity } from './useEntity'
-import { estaVencido, saldoPendiente } from '../Utils/formatters'
+import { estaVencido, saldoPendiente } from '../utils/formatters'
 
 export function usePayments() {
   const entity = useEntity(paymentsApi)

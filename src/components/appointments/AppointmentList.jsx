@@ -1,5 +1,5 @@
 import { Pencil, Trash2, BellRing } from 'lucide-react'
-import { formatDateCR, esProxima24h } from '../../Utils/formatters'
+import { formatDateCR, esProxima24h } from '../../utils/formatters'
 
 const ESTILO_ESTADO = {
   Programada: 'bg-brand-50 text-brand-700',

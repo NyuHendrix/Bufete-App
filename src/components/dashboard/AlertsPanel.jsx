@@ -1,5 +1,5 @@
 import { AlertTriangle, CalendarClock, Handshake } from 'lucide-react'
-import { formatDateCR, formatCRC } from '../../Utils/formatters'
+import { formatDateCR, formatCRC } from '../../utils/formatters'
 
 /**
  * Panel centralizado de alertas:

@@ -1,5 +1,5 @@
 import { CalendarDays, Banknote, UserPlus } from 'lucide-react'
-import { formatDateCR, formatCRC, parseLocal } from '../../Utils/formatters'
+import { formatDateCR, formatCRC, parseLocal } from '../../utils/formatters'
 
 /** Actividad reciente: últimas citas + pagos + clientes ordenados por fecha */
 export default function RecentActivity({ citas, pagos, clientes }) {

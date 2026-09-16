@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Menu, Volume2, VolumeX, Sun, Moon } from 'lucide-react'
-import { CR_TIMEZONE } from '../../Utils/formatters'
-import { sounds } from '../../Utils/sounds'
+import { CR_TIMEZONE } from '../../utils/formatters'
+import { sounds } from '../../utils/sounds'
 
 const titulos = {
   '/': 'Panel principal',

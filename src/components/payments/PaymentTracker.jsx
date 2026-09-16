@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Plus, AlertTriangle, Scale, Wallet, Clock4 } from 'lucide-react'
 import PaymentForm from './PaymentForm'
 import PaymentHistory from './PaymentHistory'
-import { formatCRC } from '../../Utils/formatters'
+import { formatCRC } from '../../utils/formatters'
 
 /** Página de pagos: resumen, filtros por período/estado/cliente y registro de cobros */
 export default function PaymentTracker({ hook, clientes }) {

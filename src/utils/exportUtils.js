@@ -76,7 +76,7 @@ function bloque(parrafos) {
   )
 }
 
-export async function generarDocumentoWord(tipo, { cliente, pagos = [], montoPendiente = 0 }) {
+export async function generarDocumentoWord(tipo, { cliente, montoPendiente = 0 }) {
   let parrafos = []
 
   if (tipo === 'contrato') {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { formatCRC } from '../../Utils/formatters'
+import { formatCRC } from '../../utils/formatters'
 
 const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic']
 

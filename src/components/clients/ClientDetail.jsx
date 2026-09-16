@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Phone, Mail, MapPin, FileText, CalendarDays } from 'lucide-react'
-import { formatCRC, formatDateCR } from '../../Utils/formatters'
+import { formatCRC, formatDateCR } from '../../utils/formatters'
 
 const ESTILO_PAGO = {
   Pagado: 'bg-emerald-50 text-emerald-700',

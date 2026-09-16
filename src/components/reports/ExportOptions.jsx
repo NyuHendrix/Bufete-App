@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FileDown, FileSpreadsheet, FileText, Loader2 } from 'lucide-react'
-import { exportToPDF, exportToExcel, generarDocumentoWord } from '../../Services/exportUtils'
-import { saldoPendiente } from '../../Utils/formatters'
+import { exportToPDF, exportToExcel, generarDocumentoWord } from '../../utils/exportUtils'
+import { saldoPendiente } from '../../utils/formatters'
 
 const hoy = () => new Date().toISOString().slice(0, 10)
 

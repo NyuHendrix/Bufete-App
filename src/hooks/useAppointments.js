@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { appointmentsApi } from '../Services/api'
+import { appointmentsApi } from '../services/api'
 import { useEntity } from './useEntity'
-import { citasSeTraslapa, esProxima24h } from '../Utils/formatters'
+import { citasSeTraslapa, esProxima24h } from '../utils/formatters'
 
 export function useAppointments() {
   const entity = useEntity(appointmentsApi)

@@ -1,5 +1,5 @@
 import { Pencil, Trash2, AlertTriangle } from 'lucide-react'
-import { formatCRC, formatDateCR, estaVencido } from '../../Utils/formatters'
+import { formatCRC, formatDateCR, estaVencido } from '../../utils/formatters'
 
 const ESTILO_PAGO = {
   Pagado: 'bg-emerald-50 text-emerald-700',

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { FileSearch, Eye } from 'lucide-react'
 import ExportOptions from './ExportOptions'
-import { formatCRC, formatDateCR, saldoPendiente, estaVencido } from '../../Utils/formatters'
+import { formatCRC, formatDateCR, saldoPendiente, estaVencido } from '../../utils/formatters'
 
 const TIPOS = [
   { valor: 'estado', label: 'Estado de cuenta por cliente' },

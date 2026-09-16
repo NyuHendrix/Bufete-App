@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { clientsApi } from '../Services/api'
+import { clientsApi } from '../services/api'
 import { useEntity } from './useEntity'
 
 export function useClients() {

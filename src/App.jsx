@@ -100,7 +100,7 @@ function Shell({ clients, citas, pagos }) {
                 </div>
               }
             />
-            <Route path="/citas" element={<AppointmentCalendar hook={citas} clientes={clients.data} />} />
+            <Route path="/citas" element={<AppointmentCalendar hook={citas} clientesHook={clients} />} />
             <Route path="/clientes" element={<ClientList hook={clients} />} />
             <Route path="/clientes/:id" element={<ClientDetail clientes={clients.data} citas={citas.data} pagos={pagos.data} />} />
             <Route path="/pagos" element={<PaymentTracker hook={pagos} clientes={clients.data} />} />

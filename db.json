@@ -215,6 +215,18 @@
       "casoDescripcion": "Despido injustificado",
       "estadoCaso": "Activo",
       "fechaRegistro": "2026-07-20"
+    },
+    {
+      "nombre": "Elsi Garro Mata",
+      "cedula": "1-1726-6790",
+      "telefono": "8485-8687",
+      "email": "elsigarro@gmail.com",
+      "direccion": "Orquideas, Desamparados, San José",
+      "tipoCaso": "Inmobiliario",
+      "casoDescripcion": "Traspaso de documentos de automovil",
+      "estadoCaso": "Activo",
+      "fechaRegistro": "2026-09-16",
+      "id": "ptjVpAs-3L0"
     }
   ],
   "appointments": [
@@ -1090,5 +1102,6 @@
       "fecha": "2026-07-20",
       "metodo": "Transferencia SINPE"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

@@ -7,6 +7,7 @@ import { es } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight, Plus, CalendarDays, LayoutList } from 'lucide-react'
 import AppointmentForm from './AppointmentForm'
 import AppointmentList from './AppointmentList'
+import ClientForm from '../clients/ClientForm'
 
 const DIAS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do']
 
@@ -15,13 +16,16 @@ const DIAS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do']
  * detección de conflictos. La vista semanal/diaria se cubre con la agenda
  * del día seleccionado.
  */
-export default function AppointmentCalendar({ hook, clientes }) {
+export default function AppointmentCalendar({ hook, clientesHook }) {
   const { data: citas, loading, error, create, update, remove, porFecha } = hook
+  const { data: clientes, create: crearCliente } = clientesHook
   const [mesActual, setMesActual] = useState(new Date())
   const [diaSel, setDiaSel] = useState(new Date())
   const [filtroTexto, setFiltroTexto] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
   const [modal, setModal] = useState({ abierto: false, inicial: null })
+  const [modalClienteAbierto, setModalClienteAbierto] = useState(false)
+  const [clientePreseleccionado, setClientePreseleccionado] = useState(null)
 
   const nombreCliente = (id) => clientes.find((c) => c.id === id)?.nombre || 'Cliente'
 
@@ -51,6 +55,15 @@ export default function AppointmentCalendar({ hook, clientes }) {
 
   const guardar = (form) => (modal.inicial ? update(modal.inicial.id, form) : create(form))
 
+  const guardarCliente = async (form) => {
+    const nuevoCliente = await crearCliente({
+      ...form,
+      fechaRegistro: new Date().toISOString().slice(0, 10),
+    })
+    setClientePreseleccionado(nuevoCliente.id)
+    return nuevoCliente
+  }
+
   return (
     <div className="space-y-4">
       {/* Barra superior */}
@@ -73,7 +86,7 @@ export default function AppointmentCalendar({ hook, clientes }) {
             <option value="">Todos los estados</option>
             {['Programada', 'Completada', 'Cancelada'].map((s) => <option key={s}>{s}</option>)}
           </select>
-          <button className="btn-primary" onClick={() => setModal({ abierto: true, inicial: null })}>
+          <button className="btn-primary" onClick={() => { setClientePreseleccionado(null); setModal({ abierto: true, inicial: null }) }}>
             <Plus size={16} /> Nueva cita
           </button>
         </div>
@@ -167,8 +180,19 @@ export default function AppointmentCalendar({ hook, clientes }) {
         inicial={modal.inicial}
         clientes={clientes}
         citas={citas}
+        clientePreseleccionado={clientePreseleccionado}
+        onClienteSeleccionado={() => setClientePreseleccionado(null)}
+        onNuevoCliente={() => setModalClienteAbierto(true)}
         onGuardar={guardar}
-        onCerrar={() => setModal({ abierto: false, inicial: null })}
+        onCerrar={() => { setModal({ abierto: false, inicial: null }); setClientePreseleccionado(null) }}
+      />
+
+      <ClientForm
+        key={`cliente-desde-cita-${modalClienteAbierto}`}
+        abierto={modalClienteAbierto}
+        inicial={null}
+        onGuardar={guardarCliente}
+        onCerrar={() => setModalClienteAbierto(false)}
       />
     </div>
   )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, AlertTriangle } from 'lucide-react'
+import { X, AlertTriangle, UserPlus } from 'lucide-react'
 import { citasSeTraslapa } from '../../utils/formatters'
 
 const VACIO = {
@@ -9,15 +9,19 @@ const VACIO = {
 const TIPOS = ['Consulta', 'Audiencia', 'Firma', 'Notaría', 'Seguimiento']
 
 /** Modal de cita con validación anti-conflictos en tiempo real */
-export default function AppointmentForm({ abierto, inicial, clientes, citas, onGuardar, onCerrar }) {
+export default function AppointmentForm({ abierto, inicial, clientes, citas, clientePreseleccionado, onClienteSeleccionado, onNuevoCliente, onGuardar, onCerrar }) {
   const [form, setForm] = useState(() => (inicial ? { ...VACIO, ...inicial } : VACIO))
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
 
   if (!abierto) return null
 
-  const set = (campo) => (e) =>
+  const set = (campo) => (e) => {
+    if (campo === 'clientId') onClienteSeleccionado?.()
     setForm((f) => ({ ...f, [campo]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }))
+  }
+
+  const clientId = clientePreseleccionado ? String(clientePreseleccionado) : form.clientId
 
   // Candidata de prueba para detectar traslapes con la agenda actual
   const conflicto = citas.some(
@@ -26,7 +30,7 @@ export default function AppointmentForm({ abierto, inicial, clientes, citas, onG
 
   const validar = () => {
     const e = {}
-    if (!form.clientId) e.clientId = 'Seleccione un cliente'
+    if (!clientId) e.clientId = 'Seleccione un cliente'
     if (!form.fecha) e.fecha = 'Seleccione una fecha'
     if (!form.hora) e.hora = 'Seleccione una hora'
     if (conflicto) e.conflicto = 'El horario se traslapa con otra cita. Ajuste la hora o la duración.'
@@ -39,7 +43,7 @@ export default function AppointmentForm({ abierto, inicial, clientes, citas, onG
     if (!validar()) return
     setGuardando(true)
     try {
-      await onGuardar({ ...form, clientId: Number(form.clientId), duracionMin: Number(form.duracionMin) })
+      await onGuardar({ ...form, clientId: Number(clientId), duracionMin: Number(form.duracionMin) })
       onCerrar()
     } finally {
       setGuardando(false)
@@ -68,8 +72,17 @@ export default function AppointmentForm({ abierto, inicial, clientes, citas, onG
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <label className="label">Cliente *</label>
-            <select className="input" value={form.clientId} onChange={set('clientId')}>
+            <div className="mb-1 flex items-center justify-between gap-3">
+              <label className="label !mb-0">Cliente *</label>
+              <button
+                type="button"
+                onClick={onNuevoCliente}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                <UserPlus size={14} /> Agregar cliente
+              </button>
+            </div>
+            <select className="input" value={clientId} onChange={set('clientId')}>
               <option value="">— Seleccionar —</option>
               {clientes.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
             </select>

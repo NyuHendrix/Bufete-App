@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard, CalendarDays, Users, Banknote, FileText, Scale, X, ChevronRight,
+  LayoutDashboard, CalendarDays, Users, Banknote, FileText, X, ChevronRight,
 } from 'lucide-react'
+import logoHarvey from '../../assets/logoHarvey.jpeg'
 
 const navItems = [
   { to: '/', label: 'Panel principal', icon: LayoutDashboard, end: true },
@@ -26,14 +27,17 @@ export default function Sidebar({ open, onClose }) {
       >
         {/* ---------- Marca ---------- */}
         <div className="flex h-16 items-center gap-3 border-b border-white/5 px-5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-indigo-600 text-white shadow-lg shadow-indigo-950/60 ring-1 ring-white/20">
-            <Scale size={20} />
+          <span className="h-10 w-12 shrink-0 overflow-hidden rounded-[10px] shadow-lg shadow-indigo-950/60 ring-1 ring-white/20">
+            <img
+              src={logoHarvey}
+              alt="Harvey: Bufete & Notaría"
+              className="h-[52px] max-w-none -translate-x-[11px] -translate-y-[7px]"
+            />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="bg-gradient-to-r from-white to-brand-200 bg-clip-text text-sm font-extrabold tracking-wide text-transparent">
-              LexCR
+            <p className="font-serif text-[11px] font-semibold tracking-[0.04em] text-brand-100">
+              Harvey: Bufete & Notaría
             </p>
-            <p className="text-[11px] font-medium text-slate-400">Bufete & Notaría</p>
           </div>
           <button
             className="rounded-lg p-1.5 text-slate-400 hover:bg-white/10 lg:hidden"
@@ -107,7 +111,7 @@ export default function Sidebar({ open, onClose }) {
             </div>
           </div>
           <p className="mt-3 text-center text-[10px] text-slate-500">
-            America/Costa_Rica · © 2026 LexCR
+            America/Costa_Rica · © 2026 Harvey: Bufete & Notaría
           </p>
         </div>
       </aside>

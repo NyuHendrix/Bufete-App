@@ -63,7 +63,7 @@ export function exportToExcel({ tituloHoja, columnas, filas, nombre }) {
 
 /* ---------------- Word: plantillas ---------------- */
 
-const BRAND = 'LexCR — Bufete & Notaría'
+const BRAND = 'Harvey: Bufete & Notaría'
 const FOOTER = 'Documento generado automáticamente. Verifique los datos antes de su uso oficial.'
 
 function bloque(parrafos) {

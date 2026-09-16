@@ -37,7 +37,7 @@ export default function Header({ onMenu, pathname }) {
       </button>
       <div>
         <h1 className="text-lg font-bold text-slate-800">
-          {titulos[pathname] || (pathname.startsWith('/clientes/') ? 'Ficha de cliente' : 'LexCR')}
+          {titulos[pathname] || (pathname.startsWith('/clientes/') ? 'Ficha de cliente' : 'Harvey: Bufete & Notaría')}
         </h1>
         <p className="hidden text-xs capitalize text-slate-500 sm:block">{fecha}</p>
       </div>

@@ -925,16 +925,16 @@
       "notas": "Pago de contado"
     },
     {
-      "id": "22",
       "clientId": 14,
       "concepto": "Trámite ante registros",
       "monto": 250000,
-      "montoPagado": 0,
       "fecha": "2026-09-11",
       "fechaVencimiento": "2026-09-13",
       "metodo": null,
-      "estado": "Pendiente",
-      "notas": ""
+      "estado": "Pagado",
+      "montoPagado": 250000,
+      "notas": "",
+      "id": "22"
     },
     {
       "id": "23",
@@ -1014,9 +1014,9 @@
       "monto": 100000,
       "fecha": "2026-09-16",
       "fechaVencimiento": "2026-09-30",
-      "metodo": null,
-      "estado": "Pendiente",
-      "montoPagado": 0,
+      "metodo": "SINPE Móvil",
+      "estado": "Pagado",
+      "montoPagado": 100000,
       "notas": "Pagar lo antes posible",
       "id": "z08g_MfWGfA"
     }

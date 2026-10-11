@@ -6,16 +6,16 @@ function StatCard({ icon: Icon, titulo, valor, detalle, color, to }) {
   return (
     <Link
       to={to}
-      className="card flex items-start gap-4 transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+      className="card stat-card flex items-start gap-4 transition-all hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
       aria-label={`Ver ${titulo}`}
     >
-      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${color}`}>
+      <span className={`stat-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${color}`}>
         <Icon size={22} />
       </span>
       <div className="min-w-0">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{titulo}</p>
-        <p className="mt-1 truncate text-xl font-bold text-slate-800">{valor}</p>
-        {detalle && <p className="mt-0.5 text-xs text-slate-500">{detalle}</p>}
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{titulo}</p>
+        <p className="stat-value mt-1 truncate text-xl font-bold">{valor}</p>
+        {detalle && <p className="mt-0.5 text-xs text-slate-400">{detalle}</p>}
       </div>
     </Link>
   )
@@ -24,7 +24,7 @@ function StatCard({ icon: Icon, titulo, valor, detalle, color, to }) {
 export default function DashboardStats({ citasProximas, pagosPendientes, vencidos, ingresosMes, nombreMes }) {
   const totalPendiente = pagosPendientes.reduce((s, p) => s + (p.monto - (p.montoPagado || 0)), 0)
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <StatCard
         icon={CalendarClock}
         titulo="Citas próximas (24 h)"

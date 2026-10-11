@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Search, Pencil, Trash2, Eye } from 'lucide-react'
+import { Plus, Search, Pencil, Trash2, Eye, MessageCircle, Mail } from 'lucide-react'
 import ClientForm from './ClientForm'
 import { formatDateCR } from '../../utils/formatters'
 
 const ESTILO_ESTADO = {
   Activo: 'bg-emerald-50 text-emerald-700',
   Archivado: 'bg-slate-100 text-slate-500',
+}
+
+const telefonoWhatsApp = (telefono) => {
+  const numero = telefono.replace(/\D/g, '')
+  return numero.length === 8 ? `506${numero}` : numero
 }
 
 export default function ClientList({ hook }) {
@@ -56,8 +61,36 @@ export default function ClientList({ hook }) {
                   <td className="td font-semibold">{c.nombre}</td>
                   <td className="td whitespace-nowrap">{c.cedula}</td>
                   <td className="td">
-                    <p>{c.telefono}</p>
-                    <p className="text-xs text-slate-400">{c.email}</p>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span>{c.telefono || '—'}</span>
+                        {c.telefono && (
+                          <a
+                            href={`https://wa.me/${telefonoWhatsApp(c.telefono)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded p-1 text-emerald-600 hover:bg-emerald-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600"
+                            title="Contactar por WhatsApp"
+                            aria-label={`Contactar a ${c.nombre} por WhatsApp`}
+                          >
+                            <MessageCircle size={15} />
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                        <span>{c.email || '—'}</span>
+                        {c.email && (
+                          <a
+                            href={`mailto:${c.email}`}
+                            className="rounded p-1 text-brand-600 hover:bg-brand-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-600"
+                            title="Enviar correo"
+                            aria-label={`Enviar correo a ${c.nombre}`}
+                          >
+                            <Mail size={15} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </td>
                   <td className="td">
                     <p className="font-medium">{c.tipoCaso}</p>

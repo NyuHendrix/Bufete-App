@@ -31,7 +31,7 @@ export default function CashFlowChart({ pagos, gastos }) {
   const W = 560, H = 220, BASE = H - 30, TOP = 15
 
   return (
-    <section className="card">
+    <section className="card chart-card">
       <div className="mb-2 flex items-center justify-between">
         <h2 className="text-sm font-bold uppercase tracking-wide text-slate-700">Flujo de caja — últimos 6 meses</h2>
         <div className="flex gap-4 text-xs text-slate-500">
@@ -56,10 +56,10 @@ export default function CashFlowChart({ pagos, gastos }) {
           const hGas = ((BASE - TOP) * b.gasto) / max
           return (
             <g key={b.clave}>
-              <rect x={x - bw - 2} y={BASE - hIng} width={bw} height={Math.max(hIng, b.ingreso ? 2 : 0)} rx="2" fill="#3d6af0">
+              <rect className="chart-bar chart-bar-income" style={{ animationDelay: `${i * 90}ms` }} x={x - bw - 2} y={BASE - hIng} width={bw} height={Math.max(hIng, b.ingreso ? 2 : 0)} rx="2" fill="#d5ad5b">
                 <title>{`${b.etiqueta} ingresos: ${formatCRC(b.ingreso)}`}</title>
               </rect>
-              <rect x={x + 2} y={BASE - hGas} width={bw} height={Math.max(hGas, b.gasto ? 2 : 0)} rx="2" fill="#fb7185">
+              <rect className="chart-bar chart-bar-expense" style={{ animationDelay: `${i * 90 + 40}ms` }} x={x + 2} y={BASE - hGas} width={bw} height={Math.max(hGas, b.gasto ? 2 : 0)} rx="2" fill="#6da9b6">
                 <title>{`${b.etiqueta} gastos: ${formatCRC(b.gasto)}`}</title>
               </rect>
               <text x={x} y={BASE + 16} fontSize="10" fill="#64748b" textAnchor="middle">{b.etiqueta}</text>

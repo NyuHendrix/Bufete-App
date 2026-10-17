@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { Check, Download, Printer, X } from 'lucide-react'
+import { exportPaymentInvoicePDF, printPaymentInvoice } from '../../utils/exportUtils'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const VACIO = {
   clientId: '', concepto: '', monto: '', fecha: '', fechaVencimiento: '',
@@ -12,6 +14,8 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
   const [form, setForm] = useState(() => (inicial ? { ...VACIO, ...inicial, monto: inicial.monto ?? '', montoPagado: inicial.montoPagado ?? '' } : VACIO))
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
+  const [factura, setFactura] = useState(null)
+  useEscapeKey(abierto, onCerrar)
 
   if (!abierto) return null
 
@@ -39,17 +43,41 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
     setGuardando(true)
     try {
       const monto = Number(form.monto)
-      await onGuardar({
+      const datosPago = {
         ...form,
         clientId: Number(form.clientId),
         monto,
         montoPagado: estado === 'Pagado' ? monto : estado === 'Parcial' ? Number(form.montoPagado) : 0,
         metodo: estado === 'Pagado' ? form.metodo : null,
-      })
-      onCerrar()
+      }
+      const pagoGuardado = await onGuardar(datosPago)
+      if (datosPago.montoPagado > 0) {
+        const cliente = clientes.find((item) => String(item.id) === String(datosPago.clientId))
+        setFactura({ pago: pagoGuardado || datosPago, cliente })
+      } else {
+        onCerrar()
+      }
     } finally {
       setGuardando(false)
     }
+  }
+
+  if (factura) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-slate-900/50" />
+        <section role="dialog" aria-modal="true" aria-labelledby="factura-pago-titulo" className="relative w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl">
+          <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-emerald-50 text-emerald-700"><Check size={22} /></span>
+          <h2 id="factura-pago-titulo" className="text-lg font-bold text-slate-800">Pago registrado</h2>
+          <p className="mt-1 text-sm text-slate-600">¿Cómo desea obtener la factura de {factura.cliente?.nombre || 'este cliente'}?</p>
+          <div className="mt-6 flex flex-wrap justify-end gap-2">
+            <button type="button" className="btn-secondary" onClick={() => printPaymentInvoice(factura)}><Printer size={16} /> Imprimir</button>
+            <button type="button" className="btn-primary" onClick={() => exportPaymentInvoicePDF(factura)}><Download size={16} /> Descargar PDF</button>
+            <button type="button" className="btn-secondary" onClick={onCerrar}>Listo</button>
+          </div>
+        </section>
+      </div>
+    )
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X, AlertTriangle, UserPlus } from 'lucide-react'
 import { citasSeTraslapa } from '../../utils/formatters'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const VACIO = {
   clientId: '', fecha: '', hora: '09:00', duracionMin: 60, tipo: 'Consulta',
@@ -13,6 +14,7 @@ export default function AppointmentForm({ abierto, inicial, clientes, citas, cli
   const [form, setForm] = useState(() => (inicial ? { ...VACIO, ...inicial } : VACIO))
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
+  useEscapeKey(abierto, onCerrar)
 
   if (!abierto) return null
 

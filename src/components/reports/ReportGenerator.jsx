@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { FileSearch, Eye } from 'lucide-react'
 import ExportOptions from './ExportOptions'
+import MonthlyIncomeReports from './MonthlyIncomeReports'
 import { formatCRC, formatDateCR, saldoPendiente, estaVencido } from '../../utils/formatters'
 
 const TIPOS = [
@@ -98,6 +99,8 @@ export default function ReportGenerator({ clientes, citas, pagos, gastos }) {
 
   return (
     <div className="space-y-4">
+      <MonthlyIncomeReports pagos={pagos} gastos={gastos} clientes={clientes} />
+
       {/* Configuración */}
       <div className="card">
         <h2 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-slate-700">

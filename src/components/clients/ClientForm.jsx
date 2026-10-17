@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const VACIO = {
   nombre: '', cedula: '', telefono: '', email: '',
@@ -12,6 +13,7 @@ export default function ClientForm({ abierto, inicial, onGuardar, onCerrar }) {
   const [form, setForm] = useState(() => (inicial ? { ...VACIO, ...inicial } : VACIO))
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
+  useEscapeKey(abierto, onCerrar)
 
   if (!abierto) return null
 

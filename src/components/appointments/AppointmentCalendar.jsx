@@ -5,7 +5,7 @@ import {
   startOfMonth, startOfWeek,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { ChevronLeft, ChevronRight, Plus, CalendarDays, LayoutList } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, CalendarDays, LayoutList, History, Search } from 'lucide-react'
 import AppointmentForm from './AppointmentForm'
 import AppointmentList from './AppointmentList'
 import ClientForm from '../clients/ClientForm'
@@ -31,6 +31,9 @@ export default function AppointmentCalendar({ hook, clientesHook }) {
   const [diaSel, setDiaSel] = useState(diaInicial)
   const [filtroTexto, setFiltroTexto] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
+  const [vista, setVista] = useState('agenda')
+  const [busquedaHistorial, setBusquedaHistorial] = useState('')
+  const [estadoHistorial, setEstadoHistorial] = useState('')
   const [modal, setModal] = useState(() => ({ abierto: Boolean(citaObjetivo), inicial: citaObjetivo || null }))
   const [modalClienteAbierto, setModalClienteAbierto] = useState(false)
   const [clientePreseleccionado, setClientePreseleccionado] = useState(null)
@@ -60,6 +63,22 @@ export default function AppointmentCalendar({ hook, clientesHook }) {
     return lista
   }, [porFecha, claveDiaSel, filtroEstado, filtroTexto]) // eslint-disable-line
 
+  const citasHistorial = useMemo(() => {
+    const texto = busquedaHistorial.trim().toLocaleLowerCase('es-CR')
+    return citas
+      .filter((cita) => !estadoHistorial || cita.estado === estadoHistorial)
+      .filter((cita) => !texto || [clientes.find((cliente) => cliente.id === cita.clientId)?.nombre || 'Cliente', cita.tipo, cita.notas || '']
+        .some((valor) => valor.toLocaleLowerCase('es-CR').includes(texto)))
+      .sort((a, b) => b.fecha.localeCompare(a.fecha) || b.hora.localeCompare(a.hora))
+  }, [citas, clientes, busquedaHistorial, estadoHistorial])
+
+  const estadosHistorial = [
+    { valor: '', etiqueta: 'Todas' },
+    { valor: 'Programada', etiqueta: 'Programadas' },
+    { valor: 'Completada', etiqueta: 'Completadas' },
+    { valor: 'Cancelada', etiqueta: 'Canceladas' },
+  ]
+
   const guardar = (form) => (modal.inicial ? update(modal.inicial.id, form) : create(form))
 
   const guardarCliente = async (form) => {
@@ -75,34 +94,45 @@ export default function AppointmentCalendar({ hook, clientesHook }) {
     <div className="space-y-4">
       {/* Barra superior */}
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1">
-          <button className="btn-secondary !px-2.5" onClick={() => { setMesActual(addMonths(mesActual, -1)); setDiaSel(startOfMonth(addMonths(mesActual, -1))) }} aria-label="Mes anterior">
-            <ChevronLeft size={16} />
-          </button>
-          <button className="btn-secondary" onClick={() => { const h = new Date(); setMesActual(h); setDiaSel(h) }}>Hoy</button>
-          <button className="btn-secondary !px-2.5" onClick={() => { setMesActual(addMonths(mesActual, 1)); setDiaSel(startOfMonth(addMonths(mesActual, 1))) }} aria-label="Mes siguiente">
-            <ChevronRight size={16} />
-          </button>
-        </div>
-        <h2 className="text-base font-bold capitalize text-slate-800">
-          {format(mesActual, 'MMMM yyyy', { locale: es })}
-        </h2>
-        <div className="ml-auto flex gap-2">
-          <input className="input !w-48" placeholder="Filtrar por cliente/tipo…" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} />
-          <select className="input !w-36" value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
-            <option value="">Todos los estados</option>
-            {['Programada', 'Completada', 'Cancelada'].map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <button className="btn-primary" onClick={() => { setClientePreseleccionado(null); setModal({ abierto: true, inicial: null }) }}>
-            <Plus size={16} /> Nueva cita
-          </button>
-        </div>
+        {vista === 'agenda' && <>
+          <div className="flex items-center gap-1">
+            <button className="btn-secondary !px-2.5" onClick={() => { setMesActual(addMonths(mesActual, -1)); setDiaSel(startOfMonth(addMonths(mesActual, -1))) }} aria-label="Mes anterior">
+              <ChevronLeft size={16} />
+            </button>
+            <button className="btn-secondary" onClick={() => { const h = new Date(); setMesActual(h); setDiaSel(h) }}>Hoy</button>
+            <button className="btn-secondary !px-2.5" onClick={() => { setMesActual(addMonths(mesActual, 1)); setDiaSel(startOfMonth(addMonths(mesActual, 1))) }} aria-label="Mes siguiente">
+              <ChevronRight size={16} />
+            </button>
+          </div>
+          <h2 className="text-base font-bold capitalize text-slate-800">
+            {format(mesActual, 'MMMM yyyy', { locale: es })}
+          </h2>
+        </>}
+        <button className="btn-primary ml-auto" onClick={() => { setClientePreseleccionado(null); setModal({ abierto: true, inicial: null }) }}>
+          <Plus size={16} /> Nueva cita
+        </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3" role="group" aria-label="Vistas de citas">
+        <button type="button" onClick={() => setVista('agenda')} aria-pressed={vista === 'agenda'} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${vista === 'agenda' ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
+          <CalendarDays size={16} /> Agenda
+        </button>
+        <button type="button" onClick={() => setVista('historial')} aria-pressed={vista === 'historial'} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${vista === 'historial' ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
+          <History size={16} /> Historial
+        </button>
       </div>
 
       {error && <div className="card border-l-4 border-red-400 text-sm text-red-600">{error}</div>}
       {loading && <p className="py-6 text-center text-sm text-slate-400">Cargando agenda…</p>}
 
-      {!loading && (
+      {!loading && vista === 'agenda' && <>
+        <div className="flex flex-wrap gap-2">
+          <input className="input !w-48" placeholder="Filtrar por cliente/tipo…" value={filtroTexto} onChange={(e) => setFiltroTexto(e.target.value)} />
+          <select className="input !w-36" value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}>
+            <option value="">Todos los estados</option>
+            {['Programada', 'Completada', 'Cancelada'].map((s) => <option key={s}>{s}</option>)}
+          </select>
+        </div>
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
           {/* ---------- Calendario mensual ---------- */}
           <div className="card xl:col-span-3">
@@ -179,7 +209,36 @@ export default function AppointmentCalendar({ hook, clientesHook }) {
             />
           </div>
         </div>
-      )}
+      </>}
+
+      {!loading && vista === 'historial' && <section className="space-y-3" aria-label="Historial de citas">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <label className="relative min-w-0 flex-1 sm:max-w-sm">
+            <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input className="input !pl-9" placeholder="Buscar cliente, tipo o nota..." value={busquedaHistorial} onChange={(e) => setBusquedaHistorial(e.target.value)} aria-label="Buscar en el historial de citas" />
+          </label>
+          <span className="text-xs text-slate-500 sm:ml-auto">{citasHistorial.length} de {citas.length} citas</span>
+        </div>
+
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar historial por estado">
+          {estadosHistorial.map(({ valor, etiqueta }) => {
+            const cantidad = valor ? citas.filter((cita) => cita.estado === valor).length : citas.length
+            return (
+              <button key={valor || 'todas'} type="button" onClick={() => setEstadoHistorial(valor)} aria-pressed={estadoHistorial === valor} className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${estadoHistorial === valor ? 'border-slate-800 bg-slate-800 text-white' : 'border-slate-200 bg-white/80 text-slate-600 hover:bg-slate-50'}`}>
+                {etiqueta} <span className={`ml-1 ${estadoHistorial === valor ? 'text-slate-300' : 'text-slate-400'}`}>{cantidad}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        <AppointmentList
+          citas={citasHistorial}
+          clientes={clientes}
+          titulo="Citas ordenadas por fecha"
+          onEditar={(cita) => setModal({ abierto: true, inicial: cita })}
+          onEliminar={(id) => remove(id)}
+        />
+      </section>}
 
       <AppointmentForm
         key={`${modal.abierto}-${modal.inicial?.id ?? 'nuevo'}`}

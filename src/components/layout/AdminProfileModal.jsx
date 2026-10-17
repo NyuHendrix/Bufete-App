@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Camera, X, ShieldCheck } from 'lucide-react'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const PERMISOS = ['Panel principal', 'Citas', 'Clientes', 'Pagos', 'Reportes', 'Administración']
 
 export default function AdminProfileModal({ perfil, onGuardar, onCerrar }) {
   const [form, setForm] = useState({ ...perfil })
   const [fotoError, setFotoError] = useState('')
+  useEscapeKey(true, onCerrar)
   const iniciales = form.nombre.split(/\s+/).filter(Boolean).slice(-2).map((parte) => parte[0]).join('').toUpperCase()
 
   const cambiarFoto = (event) => {

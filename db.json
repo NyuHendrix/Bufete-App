@@ -684,18 +684,6 @@
   ],
   "payments": [
     {
-      "id": "1",
-      "clientId": 3,
-      "concepto": "Honorarios profesionales",
-      "monto": 850000,
-      "montoPagado": 0,
-      "fecha": "2026-06-10",
-      "fechaVencimiento": "2026-07-10",
-      "metodo": null,
-      "estado": "Pendiente",
-      "notas": "Gestión de cobro activa"
-    },
-    {
       "id": "2",
       "clientId": 7,
       "concepto": "Cuota por etapa procesal",
@@ -984,16 +972,16 @@
       "notas": ""
     },
     {
-      "id": "26",
       "clientId": 14,
       "concepto": "Elaboración de contrato",
       "monto": 550000,
-      "montoPagado": 220000,
       "fecha": "2026-07-04",
       "fechaVencimiento": "2026-09-20",
       "metodo": null,
       "estado": "Parcial",
-      "notas": "Abono parcial acordado"
+      "montoPagado": 330000,
+      "notas": "Abono parcial acordado",
+      "id": "26"
     },
     {
       "id": "27",

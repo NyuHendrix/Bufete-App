@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Plus, Search, Pencil, Trash2, Eye, MessageCircle, Mail } from 'lucide-react'
 import ClientForm from './ClientForm'
 import { formatDateCR } from '../../utils/formatters'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const ESTILO_ESTADO = {
   Activo: 'bg-emerald-50 text-emerald-700',
@@ -18,6 +19,7 @@ export default function ClientList({ hook }) {
   const { filtrados, loading, error, busqueda, setBusqueda, create, update, remove } = hook
   const [modal, setModal] = useState({ abierto: false, inicial: null })
   const [confirmarId, setConfirmarId] = useState(null)
+  useEscapeKey(confirmarId !== null, () => setConfirmarId(null))
 
   const guardar = (form) => (modal.inicial ? update(modal.inicial.id, form) : create(form))
 

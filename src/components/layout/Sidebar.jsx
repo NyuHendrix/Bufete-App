@@ -3,6 +3,7 @@ import {
   LayoutDashboard, CalendarDays, Users, Banknote, FileText, X, ChevronRight,
 } from 'lucide-react'
 import logoHarvey from '../../Img/harveyLogo-transparent.png'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const navItems = [
   { to: '/', label: 'Panel principal', icon: LayoutDashboard, end: true },
@@ -13,6 +14,7 @@ const navItems = [
 ]
 
 export default function Sidebar({ open, onClose, perfil }) {
+  useEscapeKey(open, onClose)
   const iniciales = perfil.nombre.split(/\s+/).filter(Boolean).slice(-2).map((parte) => parte[0]).join('').toUpperCase()
   return (
     <>

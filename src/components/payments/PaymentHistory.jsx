@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AlertTriangle, ChevronDown, ChevronRight, X } from 'lucide-react'
 import { estaVencido, formatCRC, formatDateCR, saldoPendiente } from '../../utils/formatters'
+import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const ESTILO_PAGO = {
   Pagado: 'bg-emerald-50 text-emerald-700',
@@ -18,6 +19,8 @@ export default function PaymentHistory({ cuentas, onEditar, onEliminar, pagoObje
   const pagoInicial = cuentaObjetivo?.pagos.find((item) => String(item.id) === pagoObjetivo) || null
   const [cuentaAbierta, setCuentaAbierta] = useState(cuentaObjetivo?.clientId ?? null)
   const [detalle, setDetalle] = useState(pagoInicial)
+  useEscapeKey(cuentaAbierta !== null, () => setCuentaAbierta(null))
+  useEscapeKey(Boolean(detalle), () => setDetalle(null))
 
   return (
     <div className="space-y-2">

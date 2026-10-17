@@ -12,19 +12,22 @@ export default function CashFlowChart({ pagos, gastos }) {
       const d = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1)
       meses.push({ clave: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`, etiqueta: MESES[d.getMonth()] })
     }
-    const ingresoPorMes = Object.fromEntries(meses.map((m) => [m.clave, 0]))
+    const ingresoPorMes = Object.fromEntries(meses.map((m) => [m.clave, { total: 0, cobros: 0 }]))
     const gastoPorMes = Object.fromEntries(meses.map((m) => [m.clave, 0]))
 
     pagos.forEach((p) => {
       const clave = (p.fecha || '').slice(0, 7)
-      if (clave in ingresoPorMes) ingresoPorMes[clave] += p.montoPagado || 0
+      if (clave in ingresoPorMes && Number(p.montoPagado) > 0) {
+        ingresoPorMes[clave].total += Number(p.montoPagado)
+        ingresoPorMes[clave].cobros += 1
+      }
     })
     gastos.forEach((g) => {
       const clave = (g.fecha || '').slice(0, 7)
       if (clave in gastoPorMes) gastoPorMes[clave] += g.monto || 0
     })
 
-    const barras = meses.map((m) => ({ ...m, ingreso: ingresoPorMes[m.clave], gasto: gastoPorMes[m.clave] }))
+    const barras = meses.map((m) => ({ ...m, ingreso: ingresoPorMes[m.clave].total, cobros: ingresoPorMes[m.clave].cobros, gasto: gastoPorMes[m.clave] }))
     return { barras, max: Math.max(1, ...barras.flatMap((b) => [b.ingreso, b.gasto])) }
   }, [pagos, gastos])
 
@@ -68,6 +71,14 @@ export default function CashFlowChart({ pagos, gastos }) {
         })}
         <line x1="0" x2={W} y1={BASE} y2={BASE} stroke="#cbd5e1" />
       </svg>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-2 border-t border-slate-100 pt-3 sm:grid-cols-3">
+        {barras.map((barra) => (
+          <div key={barra.clave} className="flex items-baseline justify-between gap-2 text-xs">
+            <span className="capitalize text-slate-500">{barra.etiqueta} <span className="text-[10px]">({barra.cobros} cobros)</span></span>
+            <strong className="text-slate-700">{formatCRC(barra.ingreso)}</strong>
+          </div>
+        ))}
+      </div>
     </section>
   )
 }

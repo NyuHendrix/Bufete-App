@@ -50,7 +50,7 @@ function Shell({ clients, citas, pagos }) {
       return { nombre: 'Lic. Carlos Obando', cargo: 'Socio principal', correo: 'cobando@harvey.cr', telefono: '8888-2026', foto: '', permisos: ['Panel principal', 'Citas', 'Clientes', 'Pagos', 'Reportes', 'Administración'] }
     }
   })
-  const { pathname } = useLocation()
+  const { pathname, state: locationState } = useLocation()
 
   /* ---- Restaurar tema guardado al cargar (PASO 4) ---- */
   useEffect(() => {
@@ -81,10 +81,29 @@ function Shell({ clients, citas, pagos }) {
     .filter((p) => (p.fecha || '').startsWith(claveMes))
     .reduce((s, p) => s + (p.montoPagado || 0), 0)
   const pagosPendientes = pagos.data.filter((p) => p.estado !== 'Pagado')
+  const pagosVencidosIds = new Set(pagos.vencidos.map((pago) => String(pago.id)))
   const notificaciones = [
-    ...citas.proximas24h.map((cita) => ({ id: `cita-${cita.id}`, titulo: `Cita próxima: ${clients.data.find((cliente) => cliente.id === cita.clientId)?.nombre || 'Cliente'}`, detalle: `${cita.fecha} · ${cita.hora}` })),
-    ...pagos.vencidos.map((pago) => ({ id: `pago-${pago.id}`, titulo: `Pago vencido: ${clients.data.find((cliente) => cliente.id === pago.clientId)?.nombre || 'Cliente'}`, detalle: pago.concepto })),
-    ...citas.conflictos.map(([primera, segunda], indice) => ({ id: `conflicto-${primera.id}-${indice}`, titulo: 'Conflicto de agenda', detalle: `${primera.fecha} · ${primera.hora} y ${segunda.hora}` })),
+    ...citas.proximas24h.map((cita) => ({
+      id: `cita-${cita.id}`,
+      titulo: `Cita próxima: ${clients.data.find((cliente) => cliente.id === cita.clientId)?.nombre || 'Cliente'}`,
+      detalle: `${cita.fecha} · ${cita.hora}`,
+      accion: 'Abrir cita',
+      to: `/citas?fecha=${cita.fecha}&cita=${cita.id}`,
+    })),
+    ...pagosPendientes.map((pago) => ({
+      id: `pago-${pago.id}`,
+      titulo: `${pagosVencidosIds.has(String(pago.id)) ? 'Pago vencido' : 'Pago por cobrar'}: ${clients.data.find((cliente) => cliente.id === pago.clientId)?.nombre || 'Cliente'}`,
+      detalle: pago.concepto,
+      accion: 'Gestionar cobro',
+      to: `/pagos?clienteId=${pago.clientId}&pago=${pago.id}`,
+    })),
+    ...citas.conflictos.map(([primera, segunda], indice) => ({
+      id: `conflicto-${primera.id}-${indice}`,
+      titulo: 'Conflicto de agenda',
+      detalle: `${primera.fecha} · ${primera.hora} y ${segunda.hora}`,
+      accion: 'Resolver conflicto',
+      to: `/citas?fecha=${primera.fecha}&cita=${primera.id}`,
+    })),
   ]
 
   const guardarPerfil = (nuevoPerfil) => {
@@ -121,16 +140,17 @@ function Shell({ clients, citas, pagos }) {
                       pagosVencidos={pagos.vencidos}
                       conflictos={citas.conflictos}
                       clientes={clients.data}
+                      pagos={pagos.data}
                     />
                     <RecentActivity citas={citas.data} pagos={pagos.data} clientes={clients.data} />
                   </div>
                 </div>
               }
             />
-            <Route path="/citas" element={<AppointmentCalendar hook={citas} clientesHook={clients} />} />
+            <Route path="/citas" element={<AppointmentCalendar key={`${locationState?.notificationAction || 'route'}-${citas.loading ? 'loading' : 'ready'}`} hook={citas} clientesHook={clients} />} />
             <Route path="/clientes" element={<ClientList hook={clients} />} />
             <Route path="/clientes/:id" element={<ClientDetail clientes={clients.data} citas={citas.data} pagos={pagos.data} />} />
-            <Route path="/pagos" element={<PaymentTracker hook={pagos} clientes={clients.data} />} />
+            <Route path="/pagos" element={<PaymentTracker key={`${locationState?.notificationAction || 'route'}-${pagos.loading ? 'loading' : 'ready'}`} hook={pagos} clientes={clients.data} />} />
             <Route path="/reportes" element={<ReportGenerator clientes={clients.data} citas={citas.data} pagos={pagos.data} gastos={pagos.gastos} />} />
           </Routes>
         </main>

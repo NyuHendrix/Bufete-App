@@ -242,6 +242,11 @@
   border-color: #e2e8f0;
   color: #1e293b;
 }
+.dark .app-header:not(.app-header-dashboard) {
+  background: rgb(25 29 32 / 0.96);
+  border-color: rgb(255 255 255 / 0.09);
+  color: #e9e8e3;
+}
 .app-header-dashboard {
   background: rgb(16 20 24 / 0.94);
   border-color: rgb(255 255 255 / 0.09);
@@ -334,6 +339,19 @@
 .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .header-badge { position: absolute; top: 1px; right: 1px; display: grid; min-width: 14px; height: 14px; place-items: center; border-radius: 999px; background: #bd5758; color: white; font-size: 9px; line-height: 1; }
 .header-popover { position: absolute; top: calc(100% + 0.65rem); right: 0; z-index: 30; width: min(360px, calc(100vw - 1.5rem)); overflow: hidden; border: 1px solid rgb(213 173 91 / 0.24); border-radius: 0.75rem; background: #191d20; color: #e7e6e2; box-shadow: 0 18px 50px rgb(0 0 0 / 0.5); }
+.payment-account { transition: background-color 220ms, border-color 220ms; }
+.payment-client-button { background-color: rgb(255 255 255 / 0.45); }
+.payment-client-button.is-open {
+  background: linear-gradient(110deg, #e0f2fe, #dcfce7, #d1fae5);
+  background-size: 200% 100%;
+  animation: payment-client-select 650ms ease-out both;
+}
+.dark .payment-account { border-color: #334155; background-color: rgb(30 41 59 / 0.88); }
+.dark .payment-client-button { background-color: transparent; }
+.dark .payment-client-button.is-open {
+  background: linear-gradient(110deg, #164e63, #14532d, #134e4a);
+  background-size: 200% 100%;
+}
 .popover-row { display: flex; width: 100%; align-items: center; gap: 0.75rem; padding: 0.8rem 1rem; text-align: left; }
 button.popover-row:hover { background: rgb(255 255 255 / 0.05); }
 .popover-unread { background: rgb(213 173 91 / 0.055); }
@@ -348,6 +366,7 @@ button.popover-row:hover { background: rgb(255 255 255 / 0.05); }
 @keyframes bar-rise { from { transform: scaleY(0.05); opacity: 0.4; } to { transform: scaleY(1); opacity: 1; } }
 @keyframes draw-trend { to { stroke-dashoffset: 0; } }
 @keyframes point-appear { to { opacity: 1; } }
+@keyframes payment-client-select { from { background-position: 100% 0; } to { background-position: 0 0; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

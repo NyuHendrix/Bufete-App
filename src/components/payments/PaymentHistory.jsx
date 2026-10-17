@@ -13,9 +13,11 @@ const estadoDelPago = (pago) => {
   return saldo <= 0 ? 'Pagado' : (pago.montoPagado || 0) > 0 ? 'Parcial' : 'Pendiente'
 }
 
-export default function PaymentHistory({ cuentas, onEditar, onEliminar }) {
-  const [cuentaAbierta, setCuentaAbierta] = useState(null)
-  const [detalle, setDetalle] = useState(null)
+export default function PaymentHistory({ cuentas, onEditar, onEliminar, pagoObjetivo }) {
+  const cuentaObjetivo = cuentas.find((item) => item.pagos.some((pago) => String(pago.id) === pagoObjetivo))
+  const pagoInicial = cuentaObjetivo?.pagos.find((item) => String(item.id) === pagoObjetivo) || null
+  const [cuentaAbierta, setCuentaAbierta] = useState(cuentaObjetivo?.clientId ?? null)
+  const [detalle, setDetalle] = useState(pagoInicial)
 
   return (
     <div className="space-y-2">
@@ -24,12 +26,12 @@ export default function PaymentHistory({ cuentas, onEditar, onEliminar }) {
         const nombre = cuenta.cliente?.nombre || 'Cliente'
 
         return (
-          <section key={cuenta.clientId} className="overflow-hidden rounded-xl border border-slate-200 bg-white/85 shadow-sm">
+          <section key={cuenta.clientId} className="payment-account overflow-hidden rounded-xl border border-slate-200 bg-white/85 shadow-sm">
             <button
               type="button"
               onClick={() => setCuentaAbierta(abierta ? null : cuenta.clientId)}
               aria-expanded={abierta}
-              className="grid w-full grid-cols-1 items-center gap-3 p-4 text-left transition-colors hover:bg-slate-50 sm:grid-cols-[minmax(180px,1.4fr)_repeat(3,minmax(110px,1fr))_auto] sm:px-5"
+              className={`payment-client-button grid w-full grid-cols-1 items-center gap-3 p-4 text-left transition-colors hover:bg-slate-50 sm:grid-cols-[minmax(180px,1.4fr)_repeat(3,minmax(110px,1fr))_auto] sm:px-5 ${abierta ? 'is-open' : ''}`}
             >
               <span className="flex min-w-0 items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sm font-bold text-sky-800">

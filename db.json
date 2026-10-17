@@ -227,6 +227,17 @@
       "estadoCaso": "Activo",
       "fechaRegistro": "2026-09-16",
       "id": "ptjVpAs-3L0"
+    },
+    {
+      "nombre": "Roberto Carlos Salazar Vargas",
+      "cedula": "1-1425-0892",
+      "telefono": "8765-4321",
+      "email": "r.salazar.v@correo-falso.com",
+      "direccion": "Barrio Los Portones, Cartago",
+      "tipoCaso": "Familiar",
+      "casoDescripcion": "Derecho corporativo",
+      "estadoCaso": "Activo",
+      "id": "IpliOf69izs"
     }
   ],
   "appointments": [
@@ -341,7 +352,6 @@
       "recordatorio": true
     },
     {
-      "id": "11",
       "clientId": 18,
       "fecha": "2026-10-16",
       "hora": "11:00",
@@ -349,7 +359,8 @@
       "tipo": "Firma",
       "estado": "Programada",
       "notas": "Trámite en Registro de la Propiedad",
-      "recordatorio": true
+      "recordatorio": true,
+      "id": "11"
     },
     {
       "id": "12",
@@ -1101,6 +1112,74 @@
       "monto": 135000,
       "fecha": "2026-07-20",
       "metodo": "Transferencia SINPE"
+    }
+  ],
+  "cases": [
+    {
+      "id": "EXP-2026-0001",
+      "clientId": "1",
+      "title": "Proceso de adopción",
+      "legalBranch": "Familiar",
+      "status": "En revisión",
+      "priority": "Alta",
+      "createdAt": "2026-09-27T09:00:00.000Z",
+      "updatedAt": "2026-10-02T14:30:00.000Z",
+      "involvedParties": [
+        {
+          "name": "María Fernanda Jiménez Solano",
+          "role": "Cliente",
+          "contactInfo": "maria.jimenez@gmail.com · 8624-2681"
+        },
+        {
+          "name": "Juzgado de Familia",
+          "role": "Notario/Juzgado",
+          "contactInfo": ""
+        }
+      ]
+    },
+    {
+      "id": "EXP-2026-0002",
+      "clientId": "2",
+      "title": "Defensa en proceso por estafa",
+      "legalBranch": "Penal",
+      "status": "Tramitación",
+      "priority": "Crítica",
+      "createdAt": "2026-08-01T10:00:00.000Z",
+      "updatedAt": "2026-10-01T16:15:00.000Z",
+      "involvedParties": [
+        {
+          "name": "José Alberto Chaves Rodríguez",
+          "role": "Cliente",
+          "contactInfo": "jose.chaves@gmail.com · 8345-1041"
+        },
+        {
+          "name": "Ministerio Público",
+          "role": "Contraparte",
+          "contactInfo": ""
+        }
+      ]
+    },
+    {
+      "id": "EXP-2026-0003",
+      "clientId": "3",
+      "title": "Incumplimiento de contrato mercantil",
+      "legalBranch": "Corporativo",
+      "status": "Recepción",
+      "priority": "Media",
+      "createdAt": "2026-09-21T08:30:00.000Z",
+      "updatedAt": "2026-09-21T08:30:00.000Z",
+      "involvedParties": [
+        {
+          "name": "Carlos Manuel Villalobos Umaña",
+          "role": "Cliente",
+          "contactInfo": "carlos.villalobos@gmail.com · 8506-5120"
+        },
+        {
+          "name": "Contraparte comercial",
+          "role": "Contraparte",
+          "contactInfo": ""
+        }
+      ]
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

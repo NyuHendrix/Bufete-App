@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
-  addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth,
+  addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, parseISO,
   startOfMonth, startOfWeek,
 } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -19,14 +20,20 @@ const DIAS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do']
 export default function AppointmentCalendar({ hook, clientesHook }) {
   const { data: citas, loading, error, create, update, remove, porFecha } = hook
   const { data: clientes, create: crearCliente } = clientesHook
-  const [mesActual, setMesActual] = useState(new Date())
-  const [diaSel, setDiaSel] = useState(new Date())
+  const [searchParams] = useSearchParams()
+  const citaObjetivoId = searchParams.get('cita')
+  const fechaObjetivo = searchParams.get('fecha')
+  const citaObjetivo = citas.find((item) => String(item.id) === citaObjetivoId)
+  const fechaInicial = citaObjetivo?.fecha || fechaObjetivo
+  const diaParseado = fechaInicial ? parseISO(fechaInicial) : new Date()
+  const diaInicial = Number.isNaN(diaParseado.getTime()) ? new Date() : diaParseado
+  const [mesActual, setMesActual] = useState(diaInicial)
+  const [diaSel, setDiaSel] = useState(diaInicial)
   const [filtroTexto, setFiltroTexto] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
-  const [modal, setModal] = useState({ abierto: false, inicial: null })
+  const [modal, setModal] = useState(() => ({ abierto: Boolean(citaObjetivo), inicial: citaObjetivo || null }))
   const [modalClienteAbierto, setModalClienteAbierto] = useState(false)
   const [clientePreseleccionado, setClientePreseleccionado] = useState(null)
-
   const nombreCliente = (id) => clientes.find((c) => c.id === id)?.nombre || 'Cliente'
 
   /* ---------- Semanas del mes (lunes a domingo) ---------- */

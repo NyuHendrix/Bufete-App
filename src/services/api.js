@@ -12,6 +12,7 @@ const makeApi = (resource) => ({
 })
 
 export const clientsApi = makeApi('clients')
+export const casesApi = makeApi('cases')
 export const appointmentsApi = makeApi('appointments')
 export const paymentsApi = makeApi('payments')
 export const expensesApi = makeApi('expenses')

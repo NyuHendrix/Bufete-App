@@ -5,7 +5,7 @@ const VACIO = {
   nombre: '', cedula: '', telefono: '', email: '',
   direccion: '', tipoCaso: 'Familiar', casoDescripcion: '', estadoCaso: 'Activo',
 }
-const TIPOS = ['Familiar', 'Penal', 'Mercantil', 'Inmobiliario', 'Notarial', 'Laboral']
+const TIPOS = ['Familiar', 'Penal', 'Mercantil', 'Inmobiliario', 'Notarial', 'Laboral', 'Derecho Corporativo / Notarial y Civil']
 
 /** Modal de creación / edición de cliente con validaciones */
 export default function ClientForm({ abierto, inicial, onGuardar, onCerrar }) {

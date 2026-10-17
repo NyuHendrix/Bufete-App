@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Plus, AlertTriangle, Wallet, Clock4, Search, Users } from 'lucide-react'
 import PaymentForm from './PaymentForm'
 import PaymentHistory from './PaymentHistory'
@@ -13,8 +14,12 @@ const estadoServicio = (pago) => {
 export default function PaymentTracker({ hook, clientes }) {
   const { data: pagos, loading, error, vencidos, create, update, remove } = hook
   const [busqueda, setBusqueda] = useState('')
-  const [estadoActivo, setEstadoActivo] = useState('Todos')
   const [modal, setModal] = useState({ abierto: false, inicial: null })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const clienteObjetivo = searchParams.get('clienteId')
+  const pagoObjetivo = searchParams.get('pago')
+  const estadoParam = searchParams.get('estado')
+  const estadoActivo = ['Todos', 'Pendiente', 'Parcial', 'Pagado'].includes(estadoParam) ? estadoParam : 'Todos'
 
   const cuentas = useMemo(() => {
     const agrupadas = new Map()
@@ -45,9 +50,10 @@ export default function PaymentTracker({ hook, clientes }) {
     const texto = busqueda.trim().toLocaleLowerCase('es-CR')
     return cuentas
       .filter((cuenta) => estadoActivo === 'Todos' || cuenta.pagos.some((pago) => estadoServicio(pago) === estadoActivo))
+      .filter((cuenta) => !clienteObjetivo || String(cuenta.clientId) === clienteObjetivo)
       .filter((cuenta) => !texto || (cuenta.cliente?.nombre || 'Cliente').toLocaleLowerCase('es-CR').includes(texto))
       .sort((a, b) => (a.cliente?.nombre || '').localeCompare(b.cliente?.nombre || '', 'es'))
-  }, [cuentas, busqueda, estadoActivo])
+  }, [cuentas, busqueda, estadoActivo, clienteObjetivo])
 
   const cobradoMes = useMemo(() => {
     const hoy = new Date()
@@ -104,7 +110,12 @@ export default function PaymentTracker({ hook, clientes }) {
           <button
             key={estado}
             type="button"
-            onClick={() => setEstadoActivo(estado)}
+            onClick={() => setSearchParams((actuales) => {
+              const nuevos = new URLSearchParams(actuales)
+              if (estado === 'Todos') nuevos.delete('estado')
+              else nuevos.set('estado', estado)
+              return nuevos
+            })}
             aria-pressed={estadoActivo === estado}
             className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${estadoActivo === estado ? 'border-slate-800 bg-slate-800 text-white' : 'border-slate-200 bg-white/80 text-slate-600 hover:bg-slate-50'}`}
           >
@@ -118,10 +129,12 @@ export default function PaymentTracker({ hook, clientes }) {
         <p className="py-10 text-center text-sm text-slate-400">Cargando pagos…</p>
       ) : (
         <PaymentHistory
+          key={pagoObjetivo || 'todos'}
           cuentas={cuentasFiltradas}
           clientes={clientes}
           onEditar={(p) => setModal({ abierto: true, inicial: p })}
           onEliminar={(id) => remove(id)}
+          pagoObjetivo={pagoObjetivo}
         />
       )}
 

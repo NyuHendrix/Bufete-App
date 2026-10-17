@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Menu, Volume2, VolumeX, Sun, Moon, Bell, Mail, Search, ChevronDown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Menu, Volume2, VolumeX, Sun, Moon, Bell, Mail, Search, ChevronDown, ArrowUpRight } from 'lucide-react'
 import { CR_TIMEZONE } from '../../utils/formatters'
 import { sounds } from '../../utils/sounds'
 import AdminProfileModal from './AdminProfileModal'
@@ -13,6 +14,7 @@ const titulos = {
 }
 
 export default function Header({ onMenu, pathname, perfil, onGuardarPerfil, notificaciones }) {
+  const navigate = useNavigate()
   const [muted, setMuted] = useState(sounds.isMuted())
   const [dark, setDark] = useState(() => document.documentElement.classList.contains('dark'))
   const [panel, setPanel] = useState('')
@@ -88,7 +90,7 @@ export default function Header({ onMenu, pathname, perfil, onGuardarPerfil, noti
             <button className="text-xs text-amber-300 hover:text-amber-200" onClick={() => panel === 'inbox' ? setMensajes((actuales) => actuales.map((mensaje) => ({ ...mensaje, leido: true }))) : setPanel('')}>{panel === 'inbox' ? 'Marcar todo leído' : 'Cerrar'}</button>
           </div>
           {panel === 'inbox' ? <ul>{mensajes.map((mensaje) => <li key={mensaje.id}><button className={`popover-row ${mensaje.leido ? '' : 'popover-unread'}`} onClick={() => setMensajes((actuales) => actuales.map((item) => item.id === mensaje.id ? { ...item, leido: true } : item))}><span className="flex min-w-0 flex-1 items-start gap-3"><Mail size={16} className="mt-0.5 shrink-0 text-amber-300" /><span className="min-w-0"><strong className="block truncate">{mensaje.remitente}</strong><span className="block truncate text-xs text-slate-400">{mensaje.asunto}</span></span></span><span className="text-[10px] text-slate-500">{mensaje.hora}</span></button></li>)}</ul> : <ul className="py-1">
-            {notificaciones.length === 0 ? <li className="px-4 py-5 text-center text-xs text-slate-400">No hay alertas pendientes.</li> : notificaciones.map((aviso) => <li key={aviso.id} className="popover-row"><Bell size={16} className="shrink-0 text-rose-300" /><span className="min-w-0 flex-1"><strong className="block truncate text-xs">{aviso.titulo}</strong><span className="block truncate text-[10px] text-slate-400">{aviso.detalle}</span></span></li>)}
+            {notificaciones.length === 0 ? <li className="px-4 py-5 text-center text-xs text-slate-400">No hay alertas pendientes.</li> : notificaciones.map((aviso) => <li key={aviso.id}><button type="button" className="popover-row w-full text-left" onClick={() => { navigate(aviso.to, { state: { notificationAction: Date.now() } }); setPanel('') }} aria-label={`${aviso.accion}: ${aviso.titulo}`}><Bell size={16} className="shrink-0 text-rose-300" /><span className="min-w-0 flex-1"><strong className="block truncate text-xs">{aviso.titulo}</strong><span className="block truncate text-[10px] text-slate-400">{aviso.detalle}</span><span className="mt-1 flex items-center gap-1 text-[10px] font-semibold text-amber-300">{aviso.accion}<ArrowUpRight size={12} /></span></span></button></li>)}
           </ul>}
         </div>}
       </div>

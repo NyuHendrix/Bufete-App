@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const VACIO = {
   nombre: '', cedula: '', telefono: '', email: '',

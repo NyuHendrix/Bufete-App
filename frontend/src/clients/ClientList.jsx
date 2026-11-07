@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Plus, Search, Pencil, Trash2, Eye, MessageCircle, Mail } from 'lucide-react'
 import ClientForm from './ClientForm'
-import { formatDateCR } from '../../utils/formatters'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { formatDateCR } from '../utils/formatters'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const ESTILO_ESTADO = {
   Activo: 'bg-emerald-50 text-emerald-700',

@@ -1,6 +1,6 @@
 import { Download, Mail, MessageCircle, Printer } from 'lucide-react'
-import { exportPaymentInvoicePDF, printPaymentInvoice } from '../../utils/exportUtils'
-import { formatCRC, formatDateCR } from '../../utils/formatters'
+import { exportPaymentInvoicePDF, printPaymentInvoice } from '../utils/exportUtils'
+import { formatCRC, formatDateCR } from '../utils/formatters'
 
 const telefonoWhatsApp = (telefono) => {
   const numero = String(telefono || '').replace(/\D/g, '')

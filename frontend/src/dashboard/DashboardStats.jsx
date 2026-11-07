@@ -1,6 +1,6 @@
 import { CalendarClock, AlertTriangle, Banknote, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { formatCRC } from '../../utils/formatters'
+import { formatCRC } from '../utils/formatters'
 
 function StatCard({ icon: Icon, titulo, valor, detalle, color, to }) {
   return (

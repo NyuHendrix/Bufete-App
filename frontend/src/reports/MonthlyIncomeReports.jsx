@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { FileDown, FileSpreadsheet, Printer, TrendingUp } from 'lucide-react'
-import { exportToExcel, exportToPDF, printReport } from '../../utils/exportUtils'
-import { formatCRC } from '../../utils/formatters'
+import { exportToExcel, exportToPDF, printReport } from '../utils/exportUtils'
+import { formatCRC } from '../utils/formatters'
 
 const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre']
 const MUESTRAS = [

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { FileSearch, Eye } from 'lucide-react'
 import ExportOptions from './ExportOptions'
 import MonthlyIncomeReports from './MonthlyIncomeReports'
-import { formatCRC, formatDateCR, saldoPendiente, estaVencido } from '../../utils/formatters'
+import { formatCRC, formatDateCR, saldoPendiente, estaVencido } from '../utils/formatters'
 
 const TIPOS = [
   { valor: 'estado', label: 'Estado de cuenta por cliente' },

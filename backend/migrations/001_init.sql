@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS payments (
   fecha_vencimiento TEXT,
   fecha_pago TEXT,
   nota TEXT,
+  metodo TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (client_id) REFERENCES clients(id)

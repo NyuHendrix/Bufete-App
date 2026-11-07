@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Menu, Volume2, VolumeX, Sun, Moon, Bell, Mail, Search, ChevronDown, ArrowUpRight } from 'lucide-react'
-import { CR_TIMEZONE } from '../../utils/formatters'
-import { sounds } from '../../utils/sounds'
+import { CR_TIMEZONE } from '../utils/formatters'
+import { sounds } from '../utils/sounds'
 import AdminProfileModal from './AdminProfileModal'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const titulos = {
   '/': 'Panel principal',

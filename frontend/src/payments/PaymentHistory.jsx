@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AlertTriangle, Check, ChevronDown, ChevronRight, X } from 'lucide-react'
-import { estaVencido, formatCRC, formatDateCR, saldoPendiente } from '../../utils/formatters'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { estaVencido, formatCRC, formatDateCR, saldoPendiente } from '../utils/formatters'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 import PaymentInvoiceActions from './PaymentInvoiceActions'
 
 const ESTILO_PAGO = {

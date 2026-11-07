@@ -58,5 +58,10 @@ export async function initializeDatabase(reset = false) {
     })
   })
 
+  const paymentColumns = await query('PRAGMA table_info(payments)')
+  if (!paymentColumns.some((column) => column.name === 'metodo')) {
+    await runSql('ALTER TABLE payments ADD COLUMN metodo TEXT')
+  }
+
   return db
 }

@@ -11,8 +11,8 @@ export const paymentModel = {
 
   async create(payload) {
     const result = await runSql(
-      `INSERT INTO payments (client_id, concepto, monto, monto_pagado, estado, fecha_vencimiento, fecha_pago, nota, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+      `INSERT INTO payments (client_id, concepto, monto, monto_pagado, estado, fecha_vencimiento, fecha_pago, nota, metodo, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
       [
         payload.client_id ?? payload.clientId,
         payload.concepto,
@@ -21,7 +21,8 @@ export const paymentModel = {
         payload.estado || 'Pendiente',
         payload.fechaVencimiento || payload.fecha_vencimiento || null,
         payload.fechaPago || payload.fecha_pago || null,
-        payload.nota || null,
+        payload.notas || payload.nota || null,
+        payload.metodo || null,
       ],
     )
     return this.getById(result.lastID)
@@ -29,7 +30,7 @@ export const paymentModel = {
 
   async update(id, payload) {
     await runSql(
-      `UPDATE payments SET client_id = ?, concepto = ?, monto = ?, monto_pagado = ?, estado = ?, fecha_vencimiento = ?, fecha_pago = ?, nota = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+      `UPDATE payments SET client_id = ?, concepto = ?, monto = ?, monto_pagado = ?, estado = ?, fecha_vencimiento = ?, fecha_pago = ?, nota = ?, metodo = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
       [
         payload.client_id ?? payload.clientId,
         payload.concepto,
@@ -38,7 +39,8 @@ export const paymentModel = {
         payload.estado || 'Pendiente',
         payload.fechaVencimiento || payload.fecha_vencimiento || null,
         payload.fechaPago || payload.fecha_pago || null,
-        payload.nota || null,
+        payload.notas || payload.nota || null,
+        payload.metodo || null,
         id,
       ],
     )

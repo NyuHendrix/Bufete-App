@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Plus, AlertTriangle, Wallet, Clock4, Search, Users } from 'lucide-react'
 import PaymentForm from './PaymentForm'
 import PaymentHistory from './PaymentHistory'
-import { formatCRC, saldoPendiente } from '../../utils/formatters'
+import { formatCRC, saldoPendiente } from '../utils/formatters'
 
 const estadoServicio = (pago) => {
   const saldo = saldoPendiente(pago)

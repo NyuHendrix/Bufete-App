@@ -13,9 +13,12 @@ export function useEntity(api, { autoLoad = true } = {}) {
       const res = await api.getAll()
       if (!Array.isArray(res)) throw new Error('La respuesta de la API no es una lista')
       setData(res)
-    } catch {
+    } catch (requestError) {
       setData([])
-      setError('No se pudieron cargar los datos. ¿Está corriendo json-server? (npm run server)')
+      setError(
+        requestError.response?.data?.message
+          || 'No se pudieron cargar los datos. Verifique que el servidor esté activo (npm run server).',
+      )
     } finally {
       setLoading(false)
     }

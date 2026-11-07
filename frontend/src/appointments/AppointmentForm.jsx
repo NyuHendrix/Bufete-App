@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { X, AlertTriangle, UserPlus } from 'lucide-react'
-import { citasSeTraslapa } from '../../utils/formatters'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { citasSeTraslapa } from '../utils/formatters'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const VACIO = {
   clientId: '', fecha: '', hora: '09:00', duracionMin: 60, tipo: 'Consulta',

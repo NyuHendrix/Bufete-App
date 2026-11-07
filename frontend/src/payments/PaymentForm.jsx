@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Check, X } from 'lucide-react'
 import PaymentInvoiceActions from './PaymentInvoiceActions'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const VACIO = {
   clientId: '', concepto: '', monto: '', fecha: '', fechaVencimiento: '',

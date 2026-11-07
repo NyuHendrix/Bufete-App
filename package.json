@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --root frontend --config frontend/vite.config.js",
+    "dev": "vite frontend --config frontend/vite.config.js",
     "server": "node backend/server.js",
     "start": "concurrently \"npm run server\" \"npm run dev\"",
-    "build": "vite build --root frontend --config frontend/vite.config.js",
+    "build": "vite build frontend --config frontend/vite.config.js",
     "lint": "eslint frontend",
-    "preview": "vite preview --root frontend --config frontend/vite.config.js",
+    "preview": "vite preview frontend --config frontend/vite.config.js",
     "db:migrate": "node backend/migrations/run.js",
     "db:seed": "node backend/seeders/seed.js",
     "db:reset": "node -e \"import('./backend/config/db.js').then(async ({ initializeDatabase }) => { await initializeDatabase(true); console.log('reset ok'); })\""

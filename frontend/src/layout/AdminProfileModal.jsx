@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Camera, X, ShieldCheck } from 'lucide-react'
-import { useEscapeKey } from '../../hooks/useEscapeKey'
+import { useEscapeKey } from '../hooks/useEscapeKey'
 
 const PERMISOS = ['Panel principal', 'Citas', 'Clientes', 'Pagos', 'Reportes', 'Administración']
 

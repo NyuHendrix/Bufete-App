@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { AlertTriangle, ChevronDown, ChevronRight, X } from 'lucide-react'
+import { AlertTriangle, Check, ChevronDown, ChevronRight, X } from 'lucide-react'
 import { estaVencido, formatCRC, formatDateCR, saldoPendiente } from '../../utils/formatters'
 import { useEscapeKey } from '../../hooks/useEscapeKey'
+import PaymentInvoiceActions from './PaymentInvoiceActions'
 
 const ESTILO_PAGO = {
   Pagado: 'bg-emerald-50 text-emerald-700',
@@ -14,11 +15,19 @@ const estadoDelPago = (pago) => {
   return saldo <= 0 ? 'Pagado' : (pago.montoPagado || 0) > 0 ? 'Parcial' : 'Pendiente'
 }
 
+const fechaActual = () => {
+  const hoy = new Date()
+  return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+}
+
 export default function PaymentHistory({ cuentas, onEditar, onEliminar, pagoObjetivo }) {
   const cuentaObjetivo = cuentas.find((item) => item.pagos.some((pago) => String(pago.id) === pagoObjetivo))
   const pagoInicial = cuentaObjetivo?.pagos.find((item) => String(item.id) === pagoObjetivo) || null
   const [cuentaAbierta, setCuentaAbierta] = useState(cuentaObjetivo?.clientId ?? null)
   const [detalle, setDetalle] = useState(pagoInicial)
+  const clienteDetalle = detalle
+    ? cuentas.find((cuenta) => String(cuenta.clientId) === String(detalle.clientId))?.cliente
+    : null
   useEscapeKey(cuentaAbierta !== null, () => setCuentaAbierta(null))
   useEscapeKey(Boolean(detalle), () => setDetalle(null))
 
@@ -137,7 +146,25 @@ export default function PaymentHistory({ cuentas, onEditar, onEliminar, pagoObje
               <div className="sm:col-span-2"><p className="text-xs text-slate-500">Notas</p><p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{detalle.notas || 'Sin notas'}</p></div>
             </div>
 
+            {estadoDelPago(detalle) === 'Pagado' && (
+              <PaymentInvoiceActions pago={detalle} cliente={clienteDetalle} />
+            )}
+
             <div className="flex flex-wrap justify-end gap-2">
+              {saldoPendiente(detalle) > 0 && (
+                <button type="button" className="btn-success" onClick={() => {
+                  onEditar({
+                    ...detalle,
+                    estado: 'Pagado',
+                    montoPagado: Number(detalle.monto),
+                    fecha: fechaActual(),
+                    metodo: detalle.metodo || 'Transferencia SINPE',
+                  })
+                  setDetalle(null)
+                }}>
+                  <Check size={16} /> Registrar pago total
+                </button>
+              )}
               <button type="button" className="btn-secondary" onClick={() => { onEditar(detalle); setDetalle(null) }}>Editar cobro</button>
               <button type="button" className="btn-danger" onClick={() => {
                 if (window.confirm('¿Eliminar este cobro? Esta acción no se puede deshacer.')) {

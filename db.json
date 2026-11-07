@@ -684,16 +684,16 @@
   ],
   "payments": [
     {
-      "id": "2",
       "clientId": 7,
       "concepto": "Cuota por etapa procesal",
       "monto": 600000,
-      "montoPagado": 300000,
       "fecha": "2026-06-25",
       "fechaVencimiento": "2026-07-25",
       "metodo": null,
       "estado": "Parcial",
-      "notas": ""
+      "montoPagado": 300000,
+      "notas": "",
+      "id": "2"
     },
     {
       "id": "3",
@@ -888,16 +888,16 @@
       "notas": ""
     },
     {
-      "id": "19",
       "clientId": 13,
       "concepto": "Cuota por etapa procesal",
       "monto": 150000,
-      "montoPagado": 37500,
       "fecha": "2026-08-22",
       "fechaVencimiento": "2026-10-22",
       "metodo": null,
       "estado": "Parcial",
-      "notas": "Abono parcial acordado"
+      "montoPagado": 112500,
+      "notas": "Abono parcial acordado",
+      "id": "19"
     },
     {
       "id": "20",

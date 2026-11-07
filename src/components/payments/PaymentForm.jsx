@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Check, Download, Printer, X } from 'lucide-react'
-import { exportPaymentInvoicePDF, printPaymentInvoice } from '../../utils/exportUtils'
+import { Check, X } from 'lucide-react'
+import PaymentInvoiceActions from './PaymentInvoiceActions'
 import { useEscapeKey } from '../../hooks/useEscapeKey'
 
 const VACIO = {
@@ -15,6 +15,7 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
   const [errores, setErrores] = useState({})
   const [guardando, setGuardando] = useState(false)
   const [factura, setFactura] = useState(null)
+  const [errorGuardado, setErrorGuardado] = useState('')
   useEscapeKey(abierto, onCerrar)
 
   if (!abierto) return null
@@ -41,6 +42,7 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
     ev.preventDefault()
     if (!validar()) return
     setGuardando(true)
+    setErrorGuardado('')
     try {
       const monto = Number(form.monto)
       const datosPago = {
@@ -57,6 +59,8 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
       } else {
         onCerrar()
       }
+    } catch {
+      setErrorGuardado('No se pudo guardar el pago. Verifique la conexión con el servidor e inténtelo de nuevo.')
     } finally {
       setGuardando(false)
     }
@@ -68,13 +72,9 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
         <div className="absolute inset-0 bg-slate-900/50" />
         <section role="dialog" aria-modal="true" aria-labelledby="factura-pago-titulo" className="relative w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl">
           <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-emerald-50 text-emerald-700"><Check size={22} /></span>
-          <h2 id="factura-pago-titulo" className="text-lg font-bold text-slate-800">Pago registrado</h2>
-          <p className="mt-1 text-sm text-slate-600">¿Cómo desea obtener la factura de {factura.cliente?.nombre || 'este cliente'}?</p>
-          <div className="mt-6 flex flex-wrap justify-end gap-2">
-            <button type="button" className="btn-secondary" onClick={() => printPaymentInvoice(factura)}><Printer size={16} /> Imprimir</button>
-            <button type="button" className="btn-primary" onClick={() => exportPaymentInvoicePDF(factura)}><Download size={16} /> Descargar PDF</button>
-            <button type="button" className="btn-secondary" onClick={onCerrar}>Listo</button>
-          </div>
+          <h2 id="factura-pago-titulo" className="text-lg font-bold text-slate-800">{factura.pago.estado === 'Pagado' ? 'Deuda cancelada' : 'Pago registrado'}</h2>
+          <p className="mt-1 text-sm text-slate-600">Comprobante para {factura.cliente?.nombre || 'este cliente'}.</p>
+          <PaymentInvoiceActions pago={factura.pago} cliente={factura.cliente} onListo={onCerrar} />
         </section>
       </div>
     )
@@ -148,6 +148,7 @@ export default function PaymentForm({ abierto, inicial, clientes, onGuardar, onC
         </div>
 
         <div className="mt-6 flex justify-end gap-2">
+          {errorGuardado && <p role="alert" className="mr-auto self-center text-sm text-red-600">{errorGuardado}</p>}
           <button type="button" className="btn-secondary" onClick={onCerrar}>Cancelar</button>
           <button type="submit" data-sound="success" className="btn-success" disabled={guardando}>
             {guardando ? 'Guardando…' : 'Guardar cobro'}
